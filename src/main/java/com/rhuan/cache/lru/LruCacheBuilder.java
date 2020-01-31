@@ -4,35 +4,17 @@ public final class LruCacheBuilder {
 
     private int cacheMaxSize;
 
-    private static LruCacheBuilder builder;
-
-    private LruCacheBuilder() {
+    public LruCacheBuilder() {
         cacheMaxSize = 10;
     }
 
-    public static LruCacheBuilder createBuilder() {
-        builder = new LruCacheBuilder();
-        return builder;
+    public LruCacheBuilder withMaxSize(int size) {
+        cacheMaxSize = size;
+        return this;
     }
 
-    public static LruCacheBuilder withMaxSize(int size) {
-        checkBuilderInitialization();
-
-        builder.cacheMaxSize = size;
-        return builder;
-    }
-
-    public static LruCache build() {
-        checkBuilderInitialization();
-
-        LruCache cache = new LruCacheImpl(builder.cacheMaxSize);
-        builder = null;
+    public LruCache build() {
+        LruCache cache = new LruCacheImpl(cacheMaxSize);
         return cache;
-    }
-
-    private static void checkBuilderInitialization() {
-        if (builder == null) {
-            throw new LruCacheBuilderNotInitializedException("Cache builder not initialized");
-        }
     }
 }

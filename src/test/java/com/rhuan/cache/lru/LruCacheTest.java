@@ -13,7 +13,7 @@ public class LruCacheTest {
 
     @Test
     public void LruCacheBuilder_should_build_with_no_settings() {
-        LruCache cache = LruCacheBuilder.createBuilder().build();
+        LruCache cache = new LruCacheBuilder().build();
 
         assertTrue( cache instanceof LruCacheImpl );
     }
@@ -21,25 +21,15 @@ public class LruCacheTest {
     @Test
     public void LruCacheBuilder_should_build_with_max_size() {
         int maxSize = 100;
-        LruCache cache = LruCacheBuilder.createBuilder().withMaxSize(maxSize).build();
+        LruCache cache = new LruCacheBuilder().withMaxSize(maxSize).build();
 
         assertTrue( cache instanceof LruCacheImpl);
         assertTrue(cache.getMaxSize() == maxSize);
     }
 
-    @Test(expected = LruCacheBuilderNotInitializedException.class)
-    public void LruCacheBuilder_should_throw_exception_when_builder_not_initialized() {
-        LruCache cache = LruCacheBuilder.build();
-    }
-
-    @Test(expected = LruCacheBuilderNotInitializedException.class)
-    public void LruCacheBuilder_should_throw_exception_when_setting_builder_not_initialized() {
-        LruCacheBuilder.withMaxSize(1);
-    }
-
     @Test
     public void LruCache_should_accept_new_items_in_cache() {
-        LruCache cache = LruCacheBuilder.createBuilder().build();
+        LruCache cache = new LruCacheBuilder().build();
         cache.put("Key", "Value");
         cache.put("Key2", "Value2");
 
@@ -51,7 +41,7 @@ public class LruCacheTest {
 
     @Test
     public void LruCache_should_not_exceed_max_size() {
-        LruCache cache = LruCacheBuilder.createBuilder().withMaxSize(2).build();
+        LruCache cache = new LruCacheBuilder().withMaxSize(2).build();
         cache.put("Key", "Value");
         cache.put("Key2", "Value2");
         cache.put("Key3", "Value3");
@@ -61,7 +51,7 @@ public class LruCacheTest {
 
     @Test
     public void LruCache_should_replace_values_with_the_same_keys() {
-        LruCache cache = LruCacheBuilder.createBuilder().withMaxSize(2).build();
+        LruCache cache = new LruCacheBuilder().withMaxSize(2).build();
         cache.put("Key", "Value");
         cache.put("Key2", "Value");
         cache.put("Key2", "Value2");
@@ -74,7 +64,7 @@ public class LruCacheTest {
 
     @Test
     public void LruCache_should_renew_object_in_cache() {
-        LruCache cache = LruCacheBuilder.createBuilder().withMaxSize(2).build();
+        LruCache cache = new LruCacheBuilder().withMaxSize(2).build();
         cache.put("Key", "Value");
         cache.put("Key2", "Value2");
         cache.get("Key");
@@ -89,7 +79,7 @@ public class LruCacheTest {
 
     @Test
     public void LruCache_should_accept_multiple_object_types() {
-        LruCache cache = LruCacheBuilder.createBuilder().withMaxSize(10).build();
+        LruCache cache = new LruCacheBuilder().withMaxSize(10).build();
         cache.put("Key", "Value");
         cache.put(0, 0);
         cache.put(0L, 0L);
@@ -102,7 +92,7 @@ public class LruCacheTest {
     @Test
     public void LruCache_should_work_with_big_cache() {
         int maxSize = 50_000;
-        LruCache cache = LruCacheBuilder.createBuilder().withMaxSize(maxSize).build();
+        LruCache cache = new LruCacheBuilder().withMaxSize(maxSize).build();
         runLoopToPutIntegerValuesIntoCache(cache, maxSize + 100);
 
         // At this point the cache should be holding items from 101 - 50_100
@@ -114,7 +104,7 @@ public class LruCacheTest {
     @Test
     public void LruCache_should_be_quick_to_add_new_items_into_big_cache() {
         int maxSize = 50_000;
-        LruCache cache = LruCacheBuilder.createBuilder().withMaxSize(maxSize).build();
+        LruCache cache = new LruCacheBuilder().withMaxSize(maxSize).build();
         runLoopToPutIntegerValuesIntoCache(cache, maxSize);
 
         Long startTime = System.currentTimeMillis();
@@ -129,7 +119,7 @@ public class LruCacheTest {
     @Test
     public void LruCache_should_handle_multi_threading() {
         int maxSize = 10_000;
-        LruCache cache = LruCacheBuilder.createBuilder().withMaxSize(maxSize).build();
+        LruCache cache = new LruCacheBuilder().withMaxSize(maxSize).build();
 
         List<Thread> threads = new ArrayList<>();
         threads.add(new Thread(() -> runLoopToPutIntegerValuesIntoCache(cache, maxSize)));
