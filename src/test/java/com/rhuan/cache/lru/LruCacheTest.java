@@ -83,10 +83,18 @@ public class LruCacheTest {
         cache.put("Key", "Value");
         cache.put(0, 0);
         cache.put(0L, 0L);
-        cache.put(new ArrayList<String>(), new ArrayList<Integer>());
+
+        List<String> listKey = new ArrayList<>();
+        cache.put(listKey, new ArrayList<Integer>());
         cache.put("Key2", 0);
         cache.put(1, "Key 3");
         cache.put(1, 0);
+
+        assertTrue(cache.get("Key") != null);
+        assertTrue(cache.get(listKey) != null);
+        assertTrue(cache.get(0) != null);
+        assertTrue(cache.get(0L) != null);
+        assertTrue(cache.get(1) != null);
     }
 
     @Test
